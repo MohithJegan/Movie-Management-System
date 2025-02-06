@@ -209,7 +209,7 @@ namespace MovieManagementSystem.Services
             // empty list of data transfer object MovieDto
             List<MovieDto> MovieDtos = new List<MovieDto>();
 
-            // foreach Order Item record in database
+            // foreach Movie Item record in database
             foreach (Movie Movie in Movies)
             {
                 // create new instance of MovieDto, add to list
@@ -246,7 +246,7 @@ namespace MovieManagementSystem.Services
             // empty list of data transfer object MovieDto
             List<MovieDto> MovieDtos = new List<MovieDto>();
 
-            // foreach Order Item record in database
+            // foreach Movie Item record in database
             foreach (Movie Movie in Movies)
             {
                 // create new instance of MovieDto, add to list

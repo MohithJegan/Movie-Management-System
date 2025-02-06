@@ -134,7 +134,7 @@ namespace MovieManagementSystem.Controllers
         /// <returns>
         /// 201 Created
         /// Location: api/Actors/Find/{ActorId}
-        /// {MovieDto}
+        /// {ActorDto}
         /// or
         /// 404 Not Found
         /// </returns>
@@ -206,6 +206,7 @@ namespace MovieManagementSystem.Controllers
         /// <summary>
         /// Returns a list of actors for a specific movie by its {id}
         /// </summary>
+        /// <param name="id">The ID of the movie</param>
         /// <returns>
         /// 200 OK
         /// [{ActorDto},{ActorDto},..]

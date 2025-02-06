@@ -203,6 +203,7 @@ namespace MovieManagementSystem.Controllers
         /// <summary>
         /// Returns a list of movies for a specific actor by its {id}
         /// </summary>
+        /// <param name="id">The ID of the actor</param>
         /// <returns>
         /// 200 OK
         /// [{MovieDto},{MovieDto},..]
@@ -225,6 +226,7 @@ namespace MovieManagementSystem.Controllers
         /// <summary>
         /// Returns a list of movies for a specific studio by its {id}
         /// </summary>
+        /// <param name="id">The ID of the studio</param>
         /// <returns>
         /// 200 OK
         /// [{MovieDto},{MovieDto},..]

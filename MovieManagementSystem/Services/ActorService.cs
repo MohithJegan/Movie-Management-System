@@ -196,7 +196,7 @@ namespace MovieManagementSystem.Services
             // empty list of data transfer object ActorDto
             List<ActorDto> ActorDtos = new List<ActorDto>();
 
-            // foreach Order Item record in database
+            // foreach Actor Item record in database
             foreach (Actor Actor in Actors)
             {
                 // create new instance of ActorDto, add to list

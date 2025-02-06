@@ -207,6 +207,7 @@ namespace MovieManagementSystem.Controllers
         /// <summary>
         /// Returns a studio in list for a specific movie by its {id}
         /// </summary>
+        /// <param name="id">The ID of the movie</param>
         /// <returns>
         /// 200 OK
         /// [{StudioDto}]
