@@ -7,11 +7,11 @@ namespace MovieManagementSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ActorsController : ControllerBase
+    public class ActorController : ControllerBase
     {
         private readonly IActorService _actorService;
 
-        public ActorsController(IActorService ActorService)
+        public ActorController(IActorService ActorService)
         {
             _actorService = ActorService;
         }
