@@ -5,21 +5,21 @@ The Movie Management System is a web application that allows users to manage mov
 
 ## Controllers and Services
 
-The application consists of three main controllers: **Actors**, **Movies**, and **Studios**. Each controller manages its respective entity and interacts with services to handle logic and data operations.
+The application consists of three main controllers: **Actor**, **Movie**, and **Studio**. Each controller manages its respective entity and interacts with services to handle logic and data operations.
 
-### 1. **Actors Controller**
+### 1. **Actor Controller**
 
 - Manages CRUD operations for actors.
 - Handles the many-to-many relationship between movies and actors.
 - Supports listing actors associated with movie.
 
-### 2. **Movies Controller**
+### 2. **Movie Controller**
 
 - Manages CRUD operations for movies.
 - Handles linking and unlinking of movies and actors.
 - Supports listing movies associated with actor and studio.
 
-### 3. **Studios Controller**
+### 3. **Studio Controller**
 
 - Manages CRUD operations for studios.
 - Supports listing of studio associated with movie
@@ -42,7 +42,7 @@ The application consists of three main controllers: **Actors**, **Movies**, and 
 
 ## API Endpoints
 
-### **Actors API**
+### **Actor API**
 - `GET /api/Actors/List` - Retrieves a list of all actors.
 - `GET /api/Actors/Find/{id}` - Retrieves a specific actor by ID.
 - `PUT /api/Actors/Update/{id}` - Updates an existing actor.
@@ -50,7 +50,7 @@ The application consists of three main controllers: **Actors**, **Movies**, and 
 - `DELETE /api/Actors/Delete/{id}` - Deletes an actor by ID.
 - `GET /api/Actors/ListActorsForMovie/{id}` - Retrieves actors associated with a specific movie.
 
-### **Movies API**
+### **Movie API**
 - `GET /api/Movies/List` - Retrieves a list of all movies.
 - `GET /api/Movies/Find/{id}` - Retrieves a specific movie by ID.
 - `PUT /api/Movies/Update/{id}` - Updates an existing movie.
@@ -61,10 +61,12 @@ The application consists of three main controllers: **Actors**, **Movies**, and 
 - `POST /api/Movies/Link?movieId={id}&actorId={id}` - Links an actor to a movie.
 - `DELETE /api/Movies/Unlink?movieId={id}&actorId={id}` - Unlinks an actor from a movie.
 
-### **Studios API**
+### **Studio API**
 - `GET /api/Studios/List` - Retrieves a list of all studios.
 - `GET /api/Studios/Find/{id}` - Retrieves a specific studio by ID.
 - `PUT /api/Studios/Update/{id}` - Updates an existing studio.
 - `POST /api/Studios/Add` - Adds a new studio.
 - `DELETE /api/Studios/Delete/{id}` - Deletes a studio by ID.
 - `GET /api/Studios/ListStudioForMovie/{id}` - Retrieves the studio associated with a specific movie.
+
+
