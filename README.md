@@ -13,7 +13,6 @@ The ActorPage contains the following views:
 - **ActorPage/Show.cshtml**: Displays detailed information about a specific actor.
 - **ActorPage/New.cshtml**: Displays a form to add a new actor.
 - **ActorPage/DeleteConfirm.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of an actor or cancel to go back without performing the delete operation.
-- **ActorPage/Validation.cshtml**: Displays validation errors when the form is submitted with invalid data.
 - **ActorPage/Edit.cshtml**: Displays a form to update an actor in the database.
 
 ### **Movie Controller**
@@ -23,7 +22,6 @@ The MoviePage contains the following views:
 - **MoviePage/Show.cshtml**: Displays detailed information about a specific movie.
 - **MoviePage/New.cshtml**: Displays a form to add a new movie.
 - **MoviePage/DeleteConfirm.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of a movie or cancel to go back without performing the delete operation.
-- **MoviePage/Validation.cshtml**: Displays validation errors when the form is submitted with invalid data.
 - **MoviePage/Edit.cshtml**: Displays a form to update a movie in the database.
 
 ### **Studio Controller**
@@ -33,7 +31,6 @@ The StudioPage contains the following views:
 - **StudioPage/Show.cshtml**: Displays detailed information about a specific studio.
 - **StudioPage/New.cshtml**: Displays a form to add a new studio.
 - **StudioPage/DeleteConfirm.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of a studio or cancel to go back without performing the delete operation.
-- **StudioPage/Validation.cshtml**: Displays validation errors when the form is submitted with invalid data.
 - **StudioPage/Edit.cshtml**: Displays a form to update a studio in the database.
 
 ## Entity Models
@@ -47,7 +44,7 @@ The StudioPage contains the following views:
 - **IStudioService.cs**: Defines logic for studios.
 
 ## Services
-- **ActorService.cs**: Implements logic for actors.
+- **ActorService.cs**: Implements logic for actors, including linking/unlinking movies.
 - **MovieService.cs**: Implements logic for movies, including linking/unlinking actors.
 - **StudioService.cs**: Implements logic for studios.
 
