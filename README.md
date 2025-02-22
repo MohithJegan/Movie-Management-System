@@ -1,29 +1,40 @@
 # Movie Management System
 
 ## Project Overview
-The Movie Management System is a web application that allows users to manage movies, studios, and actors. It demonstrates the use of Entity Framework Core and ASP.NET Core Web API while efficiently handling one-to-many and many-to-many relationships.
+The Movie Management System is a web application that allows users to manage movies, studios, and actors. It demonstrates the use of Entity Framework Core and ASP.NET Core Web API while efficiently handling one-to-many and many-to-many relationships. The system also includes an image feature for studios and an authorization feature for performing main operations such as Adding, Editing, and Deleting.
 
-## Controllers and Services
+## Controllers and Views
+The application contains three main controllers: **Actor**, **Movie**, and **Studio**. Each controller manages its respective entity and provides views for displaying data.
 
-The application consists of three main controllers: **Actor**, **Movie**, and **Studio**. Each controller manages its respective entity and interacts with services to handle logic and data operations.
+### **Actor Controller**
+The ActorPage contains the following views:
 
-### 1. **Actor Controller**
+- **ActorPage/List.cshtml**: Displays a list of all actors.
+- **ActorPage/Show.cshtml**: Displays detailed information about a specific actor.
+- **ActorPage/New.cshtml**: Displays a form to add a new actor.
+- **ActorPage/DeleteConfirm.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of an actor or cancel to go back without performing the delete operation.
+- **ActorPage/Validation.cshtml**: Displays validation errors when the form is submitted with invalid data.
+- **ActorPage/Edit.cshtml**: Displays a form to update an actor in the database.
 
-- Manages CRUD operations for actors.
-- Handles the many-to-many relationship between movies and actors.
-- Supports listing actors associated with movie.
+### **Movie Controller**
+The MoviePage contains the following views:
 
-### 2. **Movie Controller**
+- **MoviePage/List.cshtml**: Displays a list of all movies.
+- **MoviePage/Show.cshtml**: Displays detailed information about a specific movie.
+- **MoviePage/New.cshtml**: Displays a form to add a new movie.
+- **MoviePage/DeleteConfirm.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of a movie or cancel to go back without performing the delete operation.
+- **MoviePage/Validation.cshtml**: Displays validation errors when the form is submitted with invalid data.
+- **MoviePage/Edit.cshtml**: Displays a form to update a movie in the database.
 
-- Manages CRUD operations for movies.
-- Handles linking and unlinking of movies and actors.
-- Supports listing movies associated with actor and studio.
+### **Studio Controller**
+The StudioPage contains the following views:
 
-### 3. **Studio Controller**
-
-- Manages CRUD operations for studios.
-- Supports listing of studio associated with movie
-
+- **StudioPage/List.cshtml**: Displays a list of all studios.
+- **StudioPage/Show.cshtml**: Displays detailed information about a specific studio.
+- **StudioPage/New.cshtml**: Displays a form to add a new studio.
+- **StudioPage/DeleteConfirm.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of a studio or cancel to go back without performing the delete operation.
+- **StudioPage/Validation.cshtml**: Displays validation errors when the form is submitted with invalid data.
+- **StudioPage/Edit.cshtml**: Displays a form to update a studio in the database.
 
 ## Entity Models
 - **Actor.cs**: Represents actors and their attributes.
@@ -49,6 +60,8 @@ The application consists of three main controllers: **Actor**, **Movie**, and **
 - `POST /api/Actors/Add` - Adds a new actor.
 - `DELETE /api/Actors/Delete/{id}` - Deletes an actor by ID.
 - `GET /api/Actors/ListActorsForMovie/{id}` - Retrieves actors associated with a specific movie.
+- `POST /api/Actors/Link?actorId={id}&movieId={id}` - Links a movie to an actor.
+- `DELETE /api/Actors/Unlink?actorId={id}&movieId={id}` - Unlinks a movie from an actor.
 
 ### **Movie API**
 - `GET /api/Movies/List` - Retrieves a list of all movies.
@@ -69,4 +82,6 @@ The application consists of three main controllers: **Actor**, **Movie**, and **
 - `DELETE /api/Studios/Delete/{id}` - Deletes a studio by ID.
 - `GET /api/Studios/ListStudioForMovie/{id}` - Retrieves the studio associated with a specific movie.
 
-
+## Extra Features
+- **Image Feature**: Allows studios to upload and manage images.
+- **Authorization for Main Operations**: Restricts Adding, Editing, and Deleting operations to authorized users only through the application.
