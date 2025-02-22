@@ -220,5 +220,85 @@ namespace MovieManagementSystem.Services
 
         }
 
+        public async Task<ServiceResponse> LinkActorToMovie(int actorId, int movieId)
+        {
+            ServiceResponse serviceResponse = new();
+           
+            Actor? actor = await _context.Actors
+                           .Include(a => a.Movies)
+                           .Where(a => a.ActorId == actorId)
+                           .FirstOrDefaultAsync();
+            Movie? movie = await _context.Movies.FindAsync(movieId);
+
+            // Data must link to a valid entity
+            if (actor == null || movie == null)
+            {
+                serviceResponse.Status = ServiceResponse.ServiceStatus.NotFound;
+                if (actor == null)
+                {
+                    serviceResponse.Messages.Add("Actor was not found. ");
+                }
+                if (movie == null)
+                {
+                    serviceResponse.Messages.Add("Movie was not found.");
+                }
+                return serviceResponse;
+            }
+            try
+            {
+                actor.Movies.Add(movie);
+                _context.SaveChanges();
+            }
+            catch (Exception Ex)
+            {
+                serviceResponse.Messages.Add("There was an issue linking the movie to the actor");
+                serviceResponse.Messages.Add(Ex.Message);
+            }
+
+
+            serviceResponse.Status = ServiceResponse.ServiceStatus.Created;
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse> UnlinkActorFromMovie(int actorId, int movieId)
+        {
+            ServiceResponse serviceResponse = new();
+
+            Actor? actor = await _context.Actors
+                .Include(a => a.Movies)
+                .Where(a => a.ActorId == actorId)
+                .FirstOrDefaultAsync();
+            Movie? movie = await _context.Movies.FindAsync(movieId);
+
+            // Data must link to a valid entity
+            if (actor == null || movie == null)
+            {
+                serviceResponse.Status = ServiceResponse.ServiceStatus.NotFound;
+                if (actor == null)
+                {
+                    serviceResponse.Messages.Add("Actor was not found.");
+                }
+                if (movie == null)
+                {
+                    serviceResponse.Messages.Add("Movie was not found.");
+                }
+                return serviceResponse;
+            }
+            try
+            {
+                actor.Movies.Remove(movie);
+                _context.SaveChanges();
+            }
+            catch (Exception Ex)
+            {
+                serviceResponse.Messages.Add("There was an issue unlinking the movie to the actor");
+                serviceResponse.Messages.Add(Ex.Message);
+            }
+
+
+            serviceResponse.Status = ServiceResponse.ServiceStatus.Deleted;
+            return serviceResponse;
+        }
+
     }
 }

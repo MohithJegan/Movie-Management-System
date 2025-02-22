@@ -43,7 +43,7 @@ namespace MovieManagementSystem.Models
         public int MovieAwardWin { get; set; }
         public string MovieStudioName { get; set; }
         public int StudioID { get; set; }
-        //public int ActorID { get; set; }
+        
 
 
     }

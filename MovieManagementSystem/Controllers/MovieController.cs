@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieManagementSystem.Interfaces;
 using MovieManagementSystem.Models;
 
@@ -96,6 +97,7 @@ namespace MovieManagementSystem.Controllers
         /// </example>
 
         [HttpPut(template: "Update/{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateMovie(int id, MovieDto MovieDto)
         {
             // {id} in URL must match MovieId in POST Body
@@ -144,6 +146,7 @@ namespace MovieManagementSystem.Controllers
         /// </example>
 
         [HttpPost(template: "Add")]
+        [Authorize]
         public async Task<ActionResult<Studio>> AddMovie(MovieDto MovieDto)
         {
             ServiceResponse response = await _movieService.AddMovie(MovieDto);
@@ -181,6 +184,7 @@ namespace MovieManagementSystem.Controllers
 
 
         [HttpDelete("Delete/{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteMovie(int id)
         {
             ServiceResponse response = await _movieService.DeleteMovie(id);
@@ -263,6 +267,7 @@ namespace MovieManagementSystem.Controllers
         /// </example>
 
         [HttpPost("Link")]
+        [Authorize]
         public async Task<ActionResult> Link(int movieId, int actorId)
         {
             ServiceResponse response = await _movieService.LinkMovieToActor(movieId, actorId);
@@ -299,6 +304,7 @@ namespace MovieManagementSystem.Controllers
         /// </example>
 
         [HttpDelete("Unlink")]
+        [Authorize]
         public async Task<ActionResult> Unlink(int movieId, int actorId)
         {
             ServiceResponse response = await _movieService.UnlinkMovieFromActor(movieId, actorId);

@@ -15,6 +15,8 @@ namespace MovieManagementSystem.Interfaces
 
         Task<ServiceResponse> DeleteStudio(int id);
 
+        Task<ServiceResponse> UpdateStudioImage(int id, IFormFile StudioPic);
+
         // related methods
 
         Task<IEnumerable<StudioDto>> ListStudioForMovie(int id);

@@ -19,6 +19,10 @@ namespace MovieManagementSystem.Interfaces
 
         Task<IEnumerable<ActorDto>> ListActorsForMovie(int id);
 
- 
+        Task<ServiceResponse> LinkActorToMovie(int actorId, int movieId);
+
+        Task<ServiceResponse> UnlinkActorFromMovie(int actorId, int movieId);
+
+
     }
 }

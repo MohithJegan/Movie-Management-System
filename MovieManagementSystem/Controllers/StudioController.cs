@@ -2,6 +2,7 @@
 using MovieManagementSystem.Models;
 using MovieManagementSystem.Interfaces;
 using MovieManagementSystem.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MovieManagementSystem.Controllers
 {
@@ -99,6 +100,7 @@ namespace MovieManagementSystem.Controllers
         /// </example>
 
         [HttpPut(template: "Update/{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateStudio(int id, StudioDto StudioDto)
         {
             // {id} in URL must match StudioId in POST Body
@@ -148,6 +150,7 @@ namespace MovieManagementSystem.Controllers
         /// </example>
 
         [HttpPost(template: "Add")]
+        [Authorize]
         public async Task<ActionResult<Studio>> AddStudio(StudioDto StudioDto)
         {
             ServiceResponse response = await _studioService.AddStudio(StudioDto);
@@ -185,6 +188,7 @@ namespace MovieManagementSystem.Controllers
         /// </example>
 
         [HttpDelete("Delete/{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteStudio(int id)
         {
             ServiceResponse response = await _studioService.DeleteStudio(id);
@@ -224,6 +228,51 @@ namespace MovieManagementSystem.Controllers
 
             // return 200 OK with StudioDtos
             return Ok(StudioDtos);
+        }
+
+        /// <summary>
+        /// Receives a studio picture and saves it to /wwwroot/images/studios/{id}{extension}
+        /// </summary>
+        /// <param name="id">The studio to update an image for</param>
+        /// <param name="StudioPic">The picture to change to</param>
+        /// <returns>
+        /// 200 OK
+        /// or
+        /// 404 NOT FOUND
+        /// or 
+        /// 500 BAD REQUEST
+        /// </returns>
+        /// <example>
+        /// PUT : api/Studios/UploadStudioPic/2
+        /// HEADERS: Content-Type: Multi-part/form-data, Cookie: .AspNetCore.Identity.Application={token}
+        /// FORM DATA:
+        /// ------boundary
+        /// Content-Disposition: form-data; name="StudioPic"; filename="mystudiopic.jpg"
+        /// Content-Type: image/jpeg
+        /// </example>
+        /// <example>
+        /// curl "https://localhost:7129/api/Studios/UploadStudioPic/1" -H "Cookie: .AspNetCore.Identity.Application={token}" -X "PUT" -F StudioPic=@mystudiopic.jpg
+        /// </example>
+        
+
+        [HttpPut(template: "UploadStudioPic/{id}")]
+        [Authorize]
+        public async Task<IActionResult> UploadProductPic(int id, IFormFile StudioPic)
+        {
+
+            ServiceResponse response = await _studioService.UpdateStudioImage(id, StudioPic);
+
+            if (response.Status == ServiceResponse.ServiceStatus.NotFound)
+            {
+                return NotFound();
+            }
+            else if (response.Status == ServiceResponse.ServiceStatus.Error)
+            {
+                return StatusCode(500, response.Messages);
+            }
+
+            return Ok();
+
         }
 
     }

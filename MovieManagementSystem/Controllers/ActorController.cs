@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieManagementSystem.Interfaces;
 using MovieManagementSystem.Models;
+using MovieManagementSystem.Services;
 
 
 namespace MovieManagementSystem.Controllers
@@ -99,6 +101,7 @@ namespace MovieManagementSystem.Controllers
         /// </example>
 
         [HttpPut(template: "Update/{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateStudio(int id, ActorDto ActorDto)
         {
             // {id} in URL must match ActorId in POST Body
@@ -148,6 +151,7 @@ namespace MovieManagementSystem.Controllers
         /// </example>
 
         [HttpPost(template: "Add")]
+        [Authorize]
         public async Task<ActionResult<Actor>> AddActor(ActorDto ActorDto)
         {
             ServiceResponse response = await _actorService.AddActor(ActorDto);
@@ -183,6 +187,7 @@ namespace MovieManagementSystem.Controllers
         /// </example>
 
         [HttpDelete("Delete/{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteActor(int id)
         {
             ServiceResponse response = await _actorService.DeleteActor(id);
@@ -223,6 +228,80 @@ namespace MovieManagementSystem.Controllers
 
             // return 200 OK with MovieDtos
             return Ok(ActorDtos);
+        }
+
+        /// curl -X "POST" "https://localhost:7129/api/Movies/Link?actorId=2movieId=2"
+
+        /// <summary>
+        /// Links a movie from an actor
+        /// </summary>
+        /// <param name="actorId">The id of the actor</param>
+        /// <param name="movieId">The id of the movie</param>
+        /// <returns>
+        /// 204 No Content
+        /// or
+        /// 404 Not Found
+        /// </returns>
+        /// <example>
+        /// Post: api/Movies/Link?movieId=2&actorId=3
+        /// ->
+        /// Response Code: 204 No Content
+        /// </example>
+
+        [HttpPost("Link")]
+        [Authorize]
+        public async Task<ActionResult> Link(int actorId, int movieId)
+        {
+            ServiceResponse response = await _actorService.LinkActorToMovie(actorId, movieId);
+
+            if (response.Status == ServiceResponse.ServiceStatus.NotFound)
+            {
+                return NotFound();
+            }
+            else if (response.Status == ServiceResponse.ServiceStatus.Error)
+            {
+                return StatusCode(500, response.Messages);
+            }
+
+            return NoContent();
+
+        }
+
+        /// curl -X "DELETE" "https://localhost:7129/api/Actors/Unlink?&actorId=2movieId=2"
+
+        /// <summary>
+        /// Unlinks a movie from an actor
+        /// </summary>
+        /// <param name="actorId">The id of the actor</param>
+        /// <param name="movieId">The id of the movie</param>
+        /// <returns>
+        /// 204 No Content
+        /// or
+        /// 404 Not Found
+        /// </returns>
+        /// <example>
+        /// Delete: api/Movies/Unlink?movieId=2&actorId=3
+        /// ->
+        /// Response Code: 204 No Content
+        /// </example>
+
+        [HttpDelete("Unlink")]
+        [Authorize]
+        public async Task<ActionResult> Unlink(int actorId, int movieId)
+        {
+            ServiceResponse response = await _actorService.UnlinkActorFromMovie(actorId, movieId);
+
+            if (response.Status == ServiceResponse.ServiceStatus.NotFound)
+            {
+                return NotFound();
+            }
+            else if (response.Status == ServiceResponse.ServiceStatus.Error)
+            {
+                return StatusCode(500, response.Messages);
+            }
+
+            return NoContent();
+
         }
 
 

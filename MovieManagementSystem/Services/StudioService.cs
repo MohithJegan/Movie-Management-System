@@ -28,15 +28,25 @@ namespace MovieManagementSystem.Services
             foreach (Studio Studio in Studios)
             {
                 // create new instance of StudioDto, add to list
-                StudioDtos.Add(new StudioDto()
+                StudioDto StudioDto = new StudioDto()
                 {
                     StudioID = Studio.StudioID,
                     StudioName = Studio.StudioName,
                     StudioCountry = Studio.StudioCountry,
                     StudioEstablishedYear = Studio.StudioEstablishedYear,
                     StudioCEO = Studio.StudioCEO,
-                    StudioHeadquarter = Studio.StudioHeadquarter
-                });
+                    StudioHeadquarter = Studio.StudioHeadquarter,
+                    HasStudioPic = Studio.HasPic
+                };
+
+                if (Studio.HasPic)
+                {
+                    StudioDto.StudioImagePath = $"/images/studios/{Studio.StudioID}{Studio.PicExtension}";
+                }
+
+                // create new instance of ProductDto, add to list
+                StudioDtos.Add(StudioDto);
+
             }
 
             // return StudioDtos
@@ -62,8 +72,15 @@ namespace MovieManagementSystem.Services
                 StudioCountry = Studio.StudioCountry,
                 StudioEstablishedYear = Studio.StudioEstablishedYear,
                 StudioCEO = Studio.StudioCEO,
-                StudioHeadquarter = Studio.StudioHeadquarter
+                StudioHeadquarter = Studio.StudioHeadquarter,
+                HasStudioPic = Studio.HasPic
             };
+
+            if (Studio.HasPic)
+            {
+                StudioDto.StudioImagePath = $"/images/studios/{Studio.StudioID}{Studio.PicExtension}";
+            }
+
             return StudioDto;
         }
 
@@ -72,19 +89,27 @@ namespace MovieManagementSystem.Services
         {
             ServiceResponse serviceResponse = new();
 
-            // Create instance of Studio
-            Studio studio = new Studio()
+            Studio? Studio = await _context.Studios.FindAsync(studioDto.StudioID);
+
+            if (Studio == null)
             {
-                StudioID = Convert.ToInt32(studioDto.StudioID),
-                StudioName = studioDto.StudioName,
-                StudioCountry = studioDto.StudioCountry,
-                StudioEstablishedYear = studioDto.StudioEstablishedYear,
-                StudioCEO = studioDto.StudioCEO,
-                StudioHeadquarter = studioDto.StudioHeadquarter
-            };
+                serviceResponse.Messages.Add("Studio could not be found");
+                serviceResponse.Status = ServiceResponse.ServiceStatus.Error;
+                return serviceResponse;
+            }
+
+            Studio.StudioID = studioDto.StudioID;
+            Studio.StudioName = studioDto.StudioName;
+            Studio.StudioCountry = studioDto.StudioCountry;
+            Studio.StudioEstablishedYear = studioDto.StudioEstablishedYear;
+            Studio.StudioCEO = studioDto.StudioCEO;
+            Studio.StudioHeadquarter = studioDto.StudioHeadquarter;
 
             // flags that the object has changed
-            _context.Entry(studio).State = EntityState.Modified;
+            _context.Entry(Studio).State = EntityState.Modified;
+            // handled by another method
+            _context.Entry(Studio).Property(s => s.HasPic).IsModified = false;
+            _context.Entry(Studio).Property(s => s.PicExtension).IsModified = false;
 
             try
             {
@@ -202,6 +227,92 @@ namespace MovieManagementSystem.Services
             // return StudioDtos
             return StudioDtos;
 
+        }
+
+
+        public async Task<ServiceResponse> UpdateStudioImage(int id, IFormFile StudioPic)
+        {
+            ServiceResponse response = new();
+
+            Studio? Studio = await _context.Studios.FindAsync(id);
+            if (Studio == null)
+            {
+                response.Status = ServiceResponse.ServiceStatus.NotFound;
+                response.Messages.Add($"Studio {id} not found");
+                return response;
+            }
+
+            if (StudioPic.Length > 0)
+            {
+
+
+                // remove old picture if exists
+                if (Studio.HasPic)
+                {
+                    string OldFileName = $"{Studio.StudioID}{Studio.PicExtension}";
+                    string OldFilePath = Path.Combine("wwwroot/images/studios/", OldFileName);
+                    if (File.Exists(OldFilePath))
+                    {
+                        File.Delete(OldFilePath);
+                    }
+
+                }
+
+
+                // establish valid file types (can be changed to other file extensions if desired!)
+                List<string> Extensions = new List<string> { ".jpeg", ".jpg", ".png", ".gif" };
+                string StudioPicExtension = Path.GetExtension(StudioPic.FileName).ToLowerInvariant();
+                if (!Extensions.Contains(StudioPicExtension))
+                {
+                    response.Messages.Add($"{StudioPicExtension} is not a valid file extension");
+                    response.Status = ServiceResponse.ServiceStatus.Error;
+                    return response;
+                }
+
+                string FileName = $"{id}{StudioPicExtension}";
+                string FilePath = Path.Combine("wwwroot/images/studios/", FileName);
+
+                using (var targetStream = File.Create(FilePath))
+                {
+                    StudioPic.CopyTo(targetStream);
+                }
+
+                // check if file was uploaded
+                if (File.Exists(FilePath))
+                {
+                    Studio.PicExtension = StudioPicExtension;
+                    Studio.HasPic = true;
+
+                    _context.Entry(Studio).State = EntityState.Modified;
+
+                    try
+                    {
+                        // SQL Equivalent: Update Studios set HasPic=True, PicExtension={ext} where StudioId={id}
+
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        response.Status = ServiceResponse.ServiceStatus.Error;
+                        response.Messages.Add("An error occurred updating the record");
+
+                        return response;
+                    }
+                }
+
+            }
+            else
+            {
+                response.Messages.Add("No File Content");
+                response.Status = ServiceResponse.ServiceStatus.Error;
+                return response;
+            }
+
+            response.Status = ServiceResponse.ServiceStatus.Updated;
+
+
+
+            return response;
         }
 
     }
