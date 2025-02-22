@@ -10,27 +10,27 @@ The application contains three main controllers: **Actor**, **Movie**, and **Stu
 The ActorPage contains the following views:
 
 - **ActorPage/List.cshtml**: Displays a list of all actors.
-- **ActorPage/Show.cshtml**: Displays detailed information about a specific actor.
+- **ActorPage/Details.cshtml**: Displays detailed information about a specific actor.
 - **ActorPage/New.cshtml**: Displays a form to add a new actor.
-- **ActorPage/DeleteConfirm.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of an actor or cancel to go back without performing the delete operation.
+- **ActorPage/ConfirmDelete.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of an actor or cancel to go back without performing the delete operation.
 - **ActorPage/Edit.cshtml**: Displays a form to update an actor in the database.
 
 ### **Movie Controller**
 The MoviePage contains the following views:
 
 - **MoviePage/List.cshtml**: Displays a list of all movies.
-- **MoviePage/Show.cshtml**: Displays detailed information about a specific movie.
+- **MoviePage/Details.cshtml**: Displays detailed information about a specific movie.
 - **MoviePage/New.cshtml**: Displays a form to add a new movie.
-- **MoviePage/DeleteConfirm.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of a movie or cancel to go back without performing the delete operation.
+- **MoviePage/ConfirmDelete.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of a movie or cancel to go back without performing the delete operation.
 - **MoviePage/Edit.cshtml**: Displays a form to update a movie in the database.
 
 ### **Studio Controller**
 The StudioPage contains the following views:
 
 - **StudioPage/List.cshtml**: Displays a list of all studios.
-- **StudioPage/Show.cshtml**: Displays detailed information about a specific studio.
+- **StudioPage/Details.cshtml**: Displays detailed information about a specific studio.
 - **StudioPage/New.cshtml**: Displays a form to add a new studio.
-- **StudioPage/DeleteConfirm.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of a studio or cancel to go back without performing the delete operation.
+- **StudioPage/ConfirmDelete.cshtml**: Displays a delete confirmation page where the user can either confirm the deletion of a studio or cancel to go back without performing the delete operation.
 - **StudioPage/Edit.cshtml**: Displays a form to update a studio in the database.
 
 ## Entity Models
